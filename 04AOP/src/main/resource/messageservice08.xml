@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+								http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Target Object Definition -->
+	<bean id="message" class="spring.service.aop.impl.MessageImpl"/>
+	
+	<!-- advice Definition -->
+	<bean id="pojoAspect" class="spring.service.aop.advice.PojoAspectJ"/>
+	
+	<aop:config>
+		<aop:aspect ref="pojoAspect">
+			<aop:pointcut expression="execution(* *.getMessage(..))" id="work"/>
+			<aop:before
+				pointcut-ref="work" method="before"/>
+			<aop:after-returning
+				pointcut-ref="work" method="afterReturning" returning="returnValue"/>
+			<aop:around
+				pointcut-ref="work" method="invoke"/>
+			<aop:after-throwing
+				pointcut-ref="work" method="afterThrowing" throwing="throwale"/>
+		</aop:aspect>
+	</aop:config>
+
+<!--
+	<aop:config>
+		<aop:aspect ref="pojoAspect">
+			<aop:pointcut expression="execution(* *.getMessage(..))" id="work"/>
+			<aop:before
+				pointcut-ref="execution" method="before"/>
+			<aop:after-returning
+				pointcut-ref="work" method="afterReturning" returning="returnValue"/>
+			<aop:around
+				pointcut-ref="work" method="invoke"/>
+			<aop:after-throwing
+				pointcut-ref="work" method="afterThrowing" throwing="throwale"/>
+		</aop:aspect>
+	</aop:config>
+ -->
+</beans>
